@@ -47,8 +47,6 @@
     <Compile Include="TaskDTO.cs" />
     <Compile Include="UserDTO.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

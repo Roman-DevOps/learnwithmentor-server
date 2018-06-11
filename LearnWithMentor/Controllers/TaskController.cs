@@ -1,20 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Description;
 using LearnWithMentorDAL.Entities;
 using LearnWithMentorDAL.UnitOfWork;
 using LearnWithMentorDTO;
 
 namespace LearnWithMentor.Controllers
 {
+    /// <summary>
+    /// Controller for working with tasks
+    /// </summary>
     public class TaskController : ApiController
     {
         private IUnitOfWork UoW;
+        
+        /// <summary>Initialise local unit of work.</summary>
         public TaskController()
         {
             UoW = new UnitOfWork(new LearnWithMentor_DBEntities());
         }
-
+        /// <summary>
+        /// Returns a list of all tasks.
+        /// </summary>
         // GET api/task      
         [HttpGet]
         [Route("api/task")]
@@ -39,7 +47,9 @@ namespace LearnWithMentor.Controllers
             if (dto == null) return null;
             return dto;
         }
-
+        /// <summary>
+        /// Returns task by ID.
+        /// </summary>
         // GET api/task/5
         [HttpGet]
         [Route("api/task/{id}")]
@@ -60,14 +70,18 @@ namespace LearnWithMentor.Controllers
                                null,
                                null);
         }
-
+        /// <summary>
+        /// Returns tasks with priority and section for defined by ID plan.
+        /// </summary>
+        /// <param name="id">ID of the tast.</param>
+        /// <param name="planId">ID of the plan.</param>
         // GET api/task/search?id={id}&planid={planid}
         [HttpGet]
         [Route("api/task")]
-        public TaskDTO Get(int id,int planid )
+        public TaskDTO Get(int id,int planId )
         {
             Task t = UoW.Tasks.Get(id);
-            if (t == null || !UoW.PlanTasks.ContainsTaskInPlan(id,planid)) return null;
+            if (t == null || !UoW.PlanTasks.ContainsTaskInPlan(id,planId)) return null;
             return new TaskDTO(t.Id,
                                t.Name,
                                t.Description,
@@ -78,9 +92,14 @@ namespace LearnWithMentor.Controllers
                                UoW.Users.ExtractFullName(t.Mod_Id),
                                t.Create_Date,
                                t.Mod_Date,
-                               t.PlanTasks.Where(pt => pt.Task_Id == t.Id && pt.Plan_Id == planid).FirstOrDefault().Priority,
-                               t.PlanTasks.Where(pt => pt.Task_Id == t.Id && pt.Plan_Id == planid).FirstOrDefault().Section_Id);
+                               t.PlanTasks.Where(pt => pt.Task_Id == t.Id && pt.Plan_Id == planId).FirstOrDefault().Priority,
+                               t.PlanTasks.Where(pt => pt.Task_Id == t.Id && pt.Plan_Id == planId).FirstOrDefault().Section_Id);
         }
+        /// <summary>
+        /// Returns tasks which name contains special string key, searches only in plan if planId given.
+        /// </summary>
+        /// <param name="key">Key for search.</param>
+        /// <param name="planId">ID of the plan.</param>
         // GET api/task/search?key={key}&planid={planid}
         [HttpGet]
         [Route("api/task/search")]
@@ -110,6 +129,10 @@ namespace LearnWithMentor.Controllers
             return dto;
         }
         // POST api/task
+        /// <summary>
+        /// Creates new task
+        /// </summary>
+        /// <param name="t">Task object for creation.</param>
         [HttpPost]
         [Route("api/task")]
         public IHttpActionResult Post([FromBody]TaskDTO t)
@@ -120,6 +143,11 @@ namespace LearnWithMentor.Controllers
         }
 
         // PUT api/task/5
+        /// <summary>
+        /// Updates task by ID
+        /// </summary>
+        /// <param name="id">Task ID for update.</param>
+        /// <param name="t">Modified task object for update.</param>
         [HttpPut]
         [Route("api/task/{id}")]
         public IHttpActionResult Put(int id, [FromBody]TaskDTO t)
@@ -130,6 +158,10 @@ namespace LearnWithMentor.Controllers
         }
 
         // DELETE api/task/5
+        /// <summary>
+        /// Deletes task by ID
+        /// </summary>
+        /// <param name="id">Task ID for delete.</param>
         [HttpDelete]
         [Route("api/task/{id}")]
         public IHttpActionResult Delete(int id)
@@ -139,6 +171,10 @@ namespace LearnWithMentor.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Returns a list of comments for defined by ID task.
+        /// </summary>
+        /// <param name="taskId">Task ID.</param>
         [Route("api/task/{taskId}/comment")]
         public IEnumerable<CommentDTO> GetComments(int taskId)
         {
@@ -152,6 +188,11 @@ namespace LearnWithMentor.Controllers
             return dto;
         }
 
+        /// <summary>
+        /// Creates comment for defined by ID task.
+        /// </summary>
+        /// <param name="value">Comment object for creation.</param>
+        /// <param name="taskId">Task ID.</param>
         [HttpPost]
         [Route("api/task/{taskId}/comment")]
         public IHttpActionResult AddComment([FromBody]CommentDTO value, int taskId)
