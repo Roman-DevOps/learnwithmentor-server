@@ -1,4 +1,4 @@
-Language: csharp
+language: csharp
 solution: LearnWithMentor.sln
 addons:
   sonarcloud:
