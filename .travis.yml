@@ -4,7 +4,7 @@ addons:
   sonarcloud:
      organization: "Roman-DevOps's personal organization"
      token:
-         secure: $net-319
+         secure: $dotnet
 script:
   - sonar-scanner
     
