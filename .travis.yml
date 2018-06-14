@@ -2,9 +2,9 @@ Language: csharp
 solution: LearnWithMentor.sln
 addons:
   sonarcloud:
-     organization: "Roman-DevOps's personal organization"
+     organization: "roman-devops-github"
      token:
-         secure: $dotnet
+         secure: $dotnet_ci
 script:
   - sonar-scanner
     
