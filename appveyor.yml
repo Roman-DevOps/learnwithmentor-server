@@ -33,17 +33,6 @@ environment:
     secure: 
     
 # build cache to preserve files/folders between builds
-cache:
-  - packages -> **\packages.config
-
-services:
-  - mysql2017
-  
-build_script:
-  - ps: >-
-      cd .\build
-      
-      .\build.ps1
 
 
 test: off
