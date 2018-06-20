@@ -2,8 +2,7 @@ language: csharp
 solution: LearnWithMentor.sln
 install:
   - sudo apt-get install -y gtk-sharp2
-  - nuget restore solution-LearnWithMentor.sln
+  - nuget restore LearnWithMentor.sln
 mono:
   - latest
-  - 3.12.0
-  - 3.10.0  
+  
