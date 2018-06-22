@@ -1,5 +1,6 @@
 language: csharp
 solution: LearnWithMentor.sln
+script: msbuild /p:Configuration=Release LearnWithMentor.sln
 install:
   - sudo apt-get install -y gtk-sharp2
   - nuget restore LearnWithMentor.sln
